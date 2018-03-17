@@ -75,7 +75,7 @@ RaidBuffs.debuffsMaster = {
 	}
 }
 
-RaidBuffs.DEBUFFS_FULL = {
+RaidBuffs.Full = {
 	[1]	= GetAbilityName(75753),
 	[2]	= GetAbilityName(63003),
 	[3]	= GetAbilityName(17906),
@@ -88,7 +88,7 @@ RaidBuffs.DEBUFFS_FULL = {
 	[10]	= GetAbilityName(27587)
 }
 
-RaidBuffs.DEBUFFS_HEALER = {
+RaidBuffs.Healer = {
 	[1]	= GetAbilityName(62796),
 	[2]	= GetAbilityName(63003),
 	[3]	= GetAbilityName(88634),
@@ -96,13 +96,13 @@ RaidBuffs.DEBUFFS_HEALER = {
 	[5]	= GetAbilityName(81519)
 }
 
-RaidBuffs.DEBUFFS_TANK = {
+RaidBuffs.Tank = {
 	[1]	= GetAbilityName(75753),
 	[2]	= GetAbilityName(34050),
 	[3]	= GetAbilityName(17906)
 }
 
-RaidBuffs.DEBUFFS_DPS = {
+RaidBuffs.Dps = {
 	[1]	= GetAbilityName(63003),
 	[2]	= GetAbilityName(102771),
 	[3]	= GetAbilityName(60416),
@@ -137,7 +137,6 @@ RaidBuffs.defaults = {
 function RaidBuffs.Init()
 
 	for i = 1, MAX_BOSSES do
-		RaidBuffs.frames[i] = nil
 		RaidBuffs.bosses[i] = false
 	end
 
@@ -151,7 +150,7 @@ function RaidBuffs.Init()
 		empty = false
 		break
 	end
-	if empty then RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_FULL end
+	if empty then RaidBuffs.savedVariables.tracking = RaidBuffs.Full end
 
 	for k, v in pairs(RaidBuffs.savedVariables.tracking) do
 		RaidBuffs.debuffsInvert[v] = k
@@ -236,7 +235,7 @@ function RaidBuffs.BossUpdate()
 				end
 			end
 			RaidBuffs.frames[i].bossHealth:SetText('')
-			RaidBuffs.frames[i]:SetHidden(false)
+			RaidBuffs.frames[i]:SetHidden(IsReticleHidden())
 			RaidBuffs.bosses[i] = true
 		else
 			if RaidBuffs.frames[i] ~= nil then

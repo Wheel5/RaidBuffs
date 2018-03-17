@@ -1,5 +1,5 @@
+RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
-if RaidBuffs == nil then RaidBuffs = {} end
 
 function RaidBuffs.buildMenu(svdefaults)
 	local LAM = LibStub("LibAddonMenu-2.0")
@@ -42,7 +42,8 @@ function RaidBuffs.buildMenu(svdefaults)
 				else
 					ReloadUI()
 				end
-			end
+			end,
+			requiresReload = true
 					
 		},
 		{
@@ -53,7 +54,6 @@ function RaidBuffs.buildMenu(svdefaults)
 			type = "dropdown",
 			name = "Growth Direction",
 			tooltip = "Determines which direction additional boss frames are placed in",
-			warning = "Will ReloadUI when new option is selected",
 			default = def.growthDir,
 			choices = RaidBuffs.GROWTH,
 			sort = "name-up",
@@ -63,16 +63,15 @@ function RaidBuffs.buildMenu(svdefaults)
 				for i = 1, #RaidBuffs.GROWTH do
 					if value == RaidBuffs.GROWTH[i] then
 						RaidBuffs.savedVariables.growthDir = value
-						ReloadUI()
 					end
 				end
-			end
+			end,
+			requiresReload = true
 		},
 		{
 			type = "dropdown",
 			name = "Tracking Preset",
 			tooltip = "Select debuff tracking preset (custom tracking coming soon)",
-			warning = "Will ReloadUI when new option is selected",
 			default = def.trackingName,
 			choices = trackingPresets,
 			getFunc = function() return RaidBuffs.savedVariables.trackingName end,
@@ -80,20 +79,12 @@ function RaidBuffs.buildMenu(svdefaults)
 				if value == RaidBuffs.savedVariables.trackingName then
 					return
 				end
-				if value == "Full" then
-					RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_FULL
-				elseif value == "Dps" then
-					RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_DPS
-				elseif value == "Tank" then
-					RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_TANK
-				elseif value == "Healer" then
-					RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_HEALER
-				end
+				RaidBuffs.savedVariables.tracking = RaidBuffs[value]
 				RaidBuffs.savedVariables.trackingName = value
 				RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
 				RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
-				ReloadUI()
-			end
+			end,
+			requiresReload = true
 		},
 		{
 			type = "checkbox",
