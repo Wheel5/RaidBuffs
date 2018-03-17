@@ -130,7 +130,7 @@ RaidBuffs.defaults = {
 -- Alkosh:		75753
 -- Minor Vulnerability:	81519
 -- Power of the Light:	27587
--- Off-Balance:		62988 63108 63003
+-- Off-Balance:		63003
 -- OB Immunity:		102771
 -- Engulfing:		34050
 
@@ -218,9 +218,6 @@ end
 
 function RaidBuffs.BossUpdate()
 	local trackedBuffs = RaidBuffs.savedVariables.tracking
---	d("=====")
---	d(trackedBuffs)
---	d("=====")
 	for i = 1, MAX_BOSSES do
 		if DoesUnitExist("boss"..i) then
 			if RaidBuffs.frames[i] == nil then
@@ -238,6 +235,7 @@ function RaidBuffs.BossUpdate()
 					row = row + 1
 				end
 			end
+			RaidBuffs.frames[i].bossHealth:SetText('')
 			RaidBuffs.frames[i]:SetHidden(false)
 			RaidBuffs.bosses[i] = true
 		else

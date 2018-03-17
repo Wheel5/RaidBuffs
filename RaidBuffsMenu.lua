@@ -80,11 +80,6 @@ function RaidBuffs.buildMenu(svdefaults)
 				if value == RaidBuffs.savedVariables.trackingName then
 					return
 				end
-				-- RaidBuffs.savedVariables.tracking = { }
-				-- for i = 1, 10 do
-				-- 	RaidBuffs.savedVariables.tracking[i] = nil
-				-- 	RaidBuffs.debuffsInvert[i] = nil
-				-- end
 				if value == "Full" then
 					RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_FULL
 				elseif value == "Dps" then
@@ -98,6 +93,17 @@ function RaidBuffs.buildMenu(svdefaults)
 				RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
 				RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
 				ReloadUI()
+			end
+		},
+		{
+			type = "checkbox",
+			name = "Track boss HP",
+			tooltip = "Toggles boss frames displaying boss HP",
+			default = def.trackHealth,
+			getFunc = function() return RaidBuffs.savedVariables.trackHealth end,
+			setFunc = function(value)
+				RaidBuffs.savedVariables.trackHealth = value
+				RaidBuffs.BossUpdate()
 			end
 		},
 	}
