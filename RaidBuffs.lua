@@ -142,7 +142,7 @@ function RaidBuffs.Init()
 
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_BOSSES_CHANGED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_PLAYER_ACTIVATED, RaidBuffs.BossUpdate)
-	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.toggleFrames)
+	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.reticleChange)
 	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults)
 
 	local empty = true
@@ -178,7 +178,7 @@ function RaidBuffs.time(nd)
 	return math.floor((nd - GetGameTimeMilliseconds()/1000) * 10 + 0.5)/10
 end
 
-function RaidBuffs.toggleFrames(event, hidden)
+function RaidBuffs.reticleChange(event, hidden)
 	local h = hidden or true
 	for i = 1, MAX_BOSSES do
 		if RaidBuffs.frames[i] ~= nil and DoesUnitExist('boss'..i) then
@@ -217,11 +217,13 @@ end
 
 function RaidBuffs.BossUpdate()
 	local trackedBuffs = RaidBuffs.savedVariables.tracking
+	local currRows = RaidBuffs.savedVariables.currRows
 	for i = 1, MAX_BOSSES do
 		if DoesUnitExist("boss"..i) then
 			if RaidBuffs.frames[i] == nil then
 				RaidBuffs.spawnFrame("BossFrame"..i, i)
 			end
+			RaidBuffs.frames[i]:SetDimensions(RaidBuffs.X_DIM, (currRows * 18 + 24))
 			RaidBuffs.frames[i].bossName:SetText(GetUnitName('boss'..i))
 			local row = 1
 			for j = 1, RaidBuffs.savedVariables.numTracked do

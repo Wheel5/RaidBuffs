@@ -10,6 +10,11 @@ function RaidBuffs.buildMenu(svdefaults)
 		"Tank",
 		"Healer"
 	}
+	-- local names = { }
+	-- for k,v in pairs(RaidBuffs.debuffsMaster) do
+	-- 	table.insert(names, k.name)
+	-- end
+	-- d(names)
 	
 	local panelData = {
 		type = "panel",
@@ -76,15 +81,27 @@ function RaidBuffs.buildMenu(svdefaults)
 			choices = trackingPresets,
 			getFunc = function() return RaidBuffs.savedVariables.trackingName end,
 			setFunc = function(value)
-				if value == RaidBuffs.savedVariables.trackingName then
-					return
-				end
+				if value == RaidBuffs.savedVariables.trackingName then return end
+				RaidBuffs.savedVariables.tracking = { }
 				RaidBuffs.savedVariables.tracking = RaidBuffs[value]
+				RaidBuffs.debuffsInvert = { }
+				for k, v in pairs(RaidBuffs.savedVariables.tracking) do RaidBuffs.debuffsInvert[v] = k end
 				RaidBuffs.savedVariables.trackingName = value
 				RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
 				RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
+				for i = 1, MAX_BOSSES do	-- Appears redundant, easier than making new function for the time being
+					if RaidBuffs.frames[i] ~= nil then
+						RaidBuffs.frames[i].bossName:SetText('')
+						for j = 1, RaidBuffs.MAX_ROWS do
+							RaidBuffs.frames[i].rows[j].buffName1:SetText('')
+							RaidBuffs.frames[i].rows[j].buffTime1:SetText('')
+							RaidBuffs.frames[i].rows[j].buffName2:SetText('')
+							RaidBuffs.frames[i].rows[j].buffTime2:SetText('')
+						end
+					end
+				end
+				RaidBuffs.BossUpdate()
 			end,
-			requiresReload = true
 		},
 		{
 			type = "checkbox",
