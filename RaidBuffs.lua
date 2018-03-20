@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.3.5a"
+RaidBuffs.version	= "0.5.6a"
 RaidBuffs.varVersion	= 2
 
 RaidBuffs.bosses = { }
@@ -115,7 +115,9 @@ RaidBuffs.defaults = {
 	["OffsetX"] = 400,
 	["OffsetY"] = 400,
 	["tracking"] = { },
+	["Custom"] = { },
 	["numTracked"] = 10,
+	["numCustom"] = 0,
 	["trackingName"] = "Full",
 	["growthDir"] = RaidBuffs.GROWTH[1],
 	["currRows"] = 5,
@@ -176,6 +178,28 @@ end
 
 function RaidBuffs.time(nd)
 	return math.floor((nd - GetGameTimeMilliseconds()/1000) * 10 + 0.5)/10
+end
+
+function RaidBuffs.setupCustom(value)
+	RaidBuffs.savedVariables.tracking = { }
+	RaidBuffs.savedVariables.tracking = RaidBuffs.savedVariables.Custom
+	RaidBuffs.debuffsInvert = { }
+	for k, v in pairs(RaidBuffs.savedVariables.tracking) do RaidBuffs.debuffsInvert[v] = k end
+	RaidBuffs.savedVariables.trackingName = value
+	RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
+	RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
+	for i = 1, MAX_BOSSES do	-- Appears redundant, easier than making new function for the time being
+		if RaidBuffs.frames[i] ~= nil then
+			RaidBuffs.frames[i].bossName:SetText('')
+			for j = 1, RaidBuffs.MAX_ROWS do
+				RaidBuffs.frames[i].rows[j].buffName1:SetText('')
+				RaidBuffs.frames[i].rows[j].buffTime1:SetText('')
+				RaidBuffs.frames[i].rows[j].buffName2:SetText('')
+				RaidBuffs.frames[i].rows[j].buffTime2:SetText('')
+			end
+		end
+	end
+	RaidBuffs.BossUpdate()
 end
 
 function RaidBuffs.reticleChange(event, hidden)

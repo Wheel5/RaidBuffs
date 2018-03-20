@@ -8,13 +8,9 @@ function RaidBuffs.buildMenu(svdefaults)
 		"Full",
 		"Dps",
 		"Tank",
-		"Healer"
+		"Healer",
+		"Custom"
 	}
-	-- local names = { }
-	-- for k,v in pairs(RaidBuffs.debuffsMaster) do
-	-- 	table.insert(names, k.name)
-	-- end
-	-- d(names)
 	
 	local panelData = {
 		type = "panel",
@@ -82,30 +78,32 @@ function RaidBuffs.buildMenu(svdefaults)
 			getFunc = function() return RaidBuffs.savedVariables.trackingName end,
 			setFunc = function(value)
 				if value == RaidBuffs.savedVariables.trackingName then return end
-				RaidBuffs.savedVariables.tracking = { }
-				RaidBuffs.savedVariables.tracking = RaidBuffs[value]
-				RaidBuffs.debuffsInvert = { }
-				for k, v in pairs(RaidBuffs.savedVariables.tracking) do RaidBuffs.debuffsInvert[v] = k end
-				RaidBuffs.savedVariables.trackingName = value
-				RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
-				RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
-				for i = 1, MAX_BOSSES do	-- Appears redundant, easier than making new function for the time being
-					if RaidBuffs.frames[i] ~= nil then
-						RaidBuffs.frames[i].bossName:SetText('')
-						for j = 1, RaidBuffs.MAX_ROWS do
-							RaidBuffs.frames[i].rows[j].buffName1:SetText('')
-							RaidBuffs.frames[i].rows[j].buffTime1:SetText('')
-							RaidBuffs.frames[i].rows[j].buffName2:SetText('')
-							RaidBuffs.frames[i].rows[j].buffTime2:SetText('')
+				if value == "Custom" then RaidBuffs.setupCustom(value) else
+					RaidBuffs.savedVariables.tracking = { }
+					RaidBuffs.savedVariables.tracking = RaidBuffs[value]
+					RaidBuffs.debuffsInvert = { }
+					for k, v in pairs(RaidBuffs.savedVariables.tracking) do RaidBuffs.debuffsInvert[v] = k end
+					RaidBuffs.savedVariables.trackingName = value
+					RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
+					RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
+					for i = 1, MAX_BOSSES do	-- Appears redundant, easier than making new function for the time being
+						if RaidBuffs.frames[i] ~= nil then
+							RaidBuffs.frames[i].bossName:SetText('')
+							for j = 1, RaidBuffs.MAX_ROWS do
+								RaidBuffs.frames[i].rows[j].buffName1:SetText('')
+								RaidBuffs.frames[i].rows[j].buffTime1:SetText('')
+								RaidBuffs.frames[i].rows[j].buffName2:SetText('')
+								RaidBuffs.frames[i].rows[j].buffTime2:SetText('')
+							end
 						end
 					end
+					RaidBuffs.BossUpdate()
 				end
-				RaidBuffs.BossUpdate()
 			end,
 		},
 		{
 			type = "checkbox",
-			name = "Track boss HP",
+			name = "Track Boss HP",
 			tooltip = "Toggles boss frames displaying boss HP",
 			default = def.trackHealth,
 			getFunc = function() return RaidBuffs.savedVariables.trackHealth end,
@@ -114,7 +112,46 @@ function RaidBuffs.buildMenu(svdefaults)
 				RaidBuffs.BossUpdate()
 			end
 		},
+		{
+			type = "slider",
+			name = "Number of Custom Buffs",
+			min = 1,
+			max = 10,
+			step = 1,
+			getFunc = function() return RaidBuffs.savedVariables.numCustom end,
+			setFunc = function(value)
+				RaidBuffs.savedVariables.numCustom = value
+				RaidBuffs.savedVariables.numTracked = value
+				for i = value + 1, 10 do
+					RaidBuffs.savedVariables.Custom[i] = nil
+				end
+				RaidBuffs.setupCustom("Custom")
+				ReloadUI()
+			end,
+			warning = "Reloads UI!",
+		},
 	}
+
+	local names = { }
+	for k,v in pairs(RaidBuffs.debuffsMaster) do
+		table.insert(names, k)
+	end
+	for i = 1, RaidBuffs.savedVariables.numCustom do
+		local newBuff = {
+			{
+				type = "dropdown",
+				name = "Buff " .. i,
+				width = "half",
+				choices = names,
+				getFunc = function() return RaidBuffs.savedVariables.Custom[i] end,
+				setFunc = function(value)
+					RaidBuffs.savedVariables.Custom[i] = value
+					RaidBuffs.setupCustom("Custom")
+				end
+			},
+		}
+		table.insert(options, newBuff[1])
+	end
 	
 	LAM:RegisterOptionControls(RaidBuffs.name.."Options", options)
 end
