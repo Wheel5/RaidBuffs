@@ -1,10 +1,10 @@
 ## Title: RaidBuffs
 ## Description: Live report window for important raid buffs/debuffs on a boss
 ## Author: Wheels
-## Version: 0.3.5a
+## Version: 0.5.6a
 ## APIVersion: 100022
 ## SavedVariables: RBSavedVariables
-## OptionalDependsOn: LibAddonMenu-2.0 pChat
+## OptionalDependsOn: LibAddonMenu-2.0
 
 libs/LibStub/LibStub.lua
 libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua

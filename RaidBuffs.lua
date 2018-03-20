@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.3.5a"
+RaidBuffs.version	= "0.5.6a"
 RaidBuffs.varVersion	= 2
 
 RaidBuffs.bosses = { }
@@ -75,7 +75,7 @@ RaidBuffs.debuffsMaster = {
 	}
 }
 
-RaidBuffs.DEBUFFS_FULL = {
+RaidBuffs.Full = {
 	[1]	= GetAbilityName(75753),
 	[2]	= GetAbilityName(63003),
 	[3]	= GetAbilityName(17906),
@@ -88,7 +88,7 @@ RaidBuffs.DEBUFFS_FULL = {
 	[10]	= GetAbilityName(27587)
 }
 
-RaidBuffs.DEBUFFS_HEALER = {
+RaidBuffs.Healer = {
 	[1]	= GetAbilityName(62796),
 	[2]	= GetAbilityName(63003),
 	[3]	= GetAbilityName(88634),
@@ -96,13 +96,13 @@ RaidBuffs.DEBUFFS_HEALER = {
 	[5]	= GetAbilityName(81519)
 }
 
-RaidBuffs.DEBUFFS_TANK = {
+RaidBuffs.Tank = {
 	[1]	= GetAbilityName(75753),
 	[2]	= GetAbilityName(34050),
 	[3]	= GetAbilityName(17906)
 }
 
-RaidBuffs.DEBUFFS_DPS = {
+RaidBuffs.Dps = {
 	[1]	= GetAbilityName(63003),
 	[2]	= GetAbilityName(102771),
 	[3]	= GetAbilityName(60416),
@@ -115,7 +115,9 @@ RaidBuffs.defaults = {
 	["OffsetX"] = 400,
 	["OffsetY"] = 400,
 	["tracking"] = { },
+	["Custom"] = { },
 	["numTracked"] = 10,
+	["numCustom"] = 0,
 	["trackingName"] = "Full",
 	["growthDir"] = RaidBuffs.GROWTH[1],
 	["currRows"] = 5,
@@ -130,20 +132,19 @@ RaidBuffs.defaults = {
 -- Alkosh:		75753
 -- Minor Vulnerability:	81519
 -- Power of the Light:	27587
--- Off-Balance:		62988 63108 63003
+-- Off-Balance:		63003
 -- OB Immunity:		102771
 -- Engulfing:		34050
 
 function RaidBuffs.Init()
 
 	for i = 1, MAX_BOSSES do
-		RaidBuffs.frames[i] = nil
 		RaidBuffs.bosses[i] = false
 	end
 
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_BOSSES_CHANGED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_PLAYER_ACTIVATED, RaidBuffs.BossUpdate)
-	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.toggleFrames)
+	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.reticleChange)
 	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults)
 
 	local empty = true
@@ -151,7 +152,7 @@ function RaidBuffs.Init()
 		empty = false
 		break
 	end
-	if empty then RaidBuffs.savedVariables.tracking = RaidBuffs.DEBUFFS_FULL end
+	if empty then RaidBuffs.savedVariables.tracking = RaidBuffs.Full end
 
 	for k, v in pairs(RaidBuffs.savedVariables.tracking) do
 		RaidBuffs.debuffsInvert[v] = k
@@ -179,7 +180,29 @@ function RaidBuffs.time(nd)
 	return math.floor((nd - GetGameTimeMilliseconds()/1000) * 10 + 0.5)/10
 end
 
-function RaidBuffs.toggleFrames(event, hidden)
+function RaidBuffs.setupCustom(value)
+	RaidBuffs.savedVariables.tracking = { }
+	RaidBuffs.savedVariables.tracking = RaidBuffs.savedVariables.Custom
+	RaidBuffs.debuffsInvert = { }
+	for k, v in pairs(RaidBuffs.savedVariables.tracking) do RaidBuffs.debuffsInvert[v] = k end
+	RaidBuffs.savedVariables.trackingName = value
+	RaidBuffs.savedVariables.numTracked = #RaidBuffs.savedVariables.tracking
+	RaidBuffs.savedVariables.currRows = math.ceil(#RaidBuffs.savedVariables.tracking / 2)
+	for i = 1, MAX_BOSSES do	-- Appears redundant, easier than making new function for the time being
+		if RaidBuffs.frames[i] ~= nil then
+			RaidBuffs.frames[i].bossName:SetText('')
+			for j = 1, RaidBuffs.MAX_ROWS do
+				RaidBuffs.frames[i].rows[j].buffName1:SetText('')
+				RaidBuffs.frames[i].rows[j].buffTime1:SetText('')
+				RaidBuffs.frames[i].rows[j].buffName2:SetText('')
+				RaidBuffs.frames[i].rows[j].buffTime2:SetText('')
+			end
+		end
+	end
+	RaidBuffs.BossUpdate()
+end
+
+function RaidBuffs.reticleChange(event, hidden)
 	local h = hidden or true
 	for i = 1, MAX_BOSSES do
 		if RaidBuffs.frames[i] ~= nil and DoesUnitExist('boss'..i) then
@@ -218,14 +241,13 @@ end
 
 function RaidBuffs.BossUpdate()
 	local trackedBuffs = RaidBuffs.savedVariables.tracking
---	d("=====")
---	d(trackedBuffs)
---	d("=====")
+	local currRows = RaidBuffs.savedVariables.currRows
 	for i = 1, MAX_BOSSES do
 		if DoesUnitExist("boss"..i) then
 			if RaidBuffs.frames[i] == nil then
 				RaidBuffs.spawnFrame("BossFrame"..i, i)
 			end
+			RaidBuffs.frames[i]:SetDimensions(RaidBuffs.X_DIM, (currRows * 18 + 24))
 			RaidBuffs.frames[i].bossName:SetText(GetUnitName('boss'..i))
 			local row = 1
 			for j = 1, RaidBuffs.savedVariables.numTracked do
@@ -238,7 +260,8 @@ function RaidBuffs.BossUpdate()
 					row = row + 1
 				end
 			end
-			RaidBuffs.frames[i]:SetHidden(false)
+			RaidBuffs.frames[i].bossHealth:SetText('')
+			RaidBuffs.frames[i]:SetHidden(IsReticleHidden())
 			RaidBuffs.bosses[i] = true
 		else
 			if RaidBuffs.frames[i] ~= nil then

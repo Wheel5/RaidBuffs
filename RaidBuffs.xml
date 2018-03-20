@@ -22,7 +22,7 @@
 		</Control>
 
 		<TopLevelControl name="BossFrameTemplate" mouseEnabled="false" movable="false" clampedToScreen="true" hidden="true" virtual="true" >
-			<Dimensions x="235" y="116" />
+			<Dimensions x="235" y="116" /> <!-- Garbage -->
 
 			<OnMoveStop>
 				RaidBuffs.OnMoveStop()
