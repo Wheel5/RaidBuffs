@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.5.6a"
+RaidBuffs.version	= "0.6.6a"
 RaidBuffs.varVersion	= 2
 
 RaidBuffs.bosses = { }
@@ -72,7 +72,11 @@ RaidBuffs.debuffsMaster = {
 	[GetAbilityName(62796)] = {
 		name = "Magsteal",
 		updated = false
-	}
+	},
+	[GetAbilityName(17945)] = {
+		name = "Weakening",
+		updated = false
+	},
 }
 
 RaidBuffs.Full = {
@@ -294,10 +298,9 @@ function RaidBuffs.buffUpdate()
 			local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
 			local health = math.floor((current/max*100) + 0.5)
 			if RaidBuffs.savedVariables.trackHealth then
-				local red
-				local green
-				if health > 50 then red = 2-(health*2/100) else red = 1 end	-- wtb ternary operator
-				if health < 50 then green = (health*2/100) else green = 1 end
+				local healthValue = health*2/100	-- ty Marc!
+				local red = (health > 50 and 2 - healthValue) or 1
+				local green = (health < 50 and healthValue) or 1
 				RaidBuffs.frames[i].bossHealth:SetText(health..'%')
 				RaidBuffs.frames[i].bossHealth:SetColor(red, green, 0)
 			end
