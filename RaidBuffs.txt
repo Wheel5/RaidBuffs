@@ -1,12 +1,15 @@
 ## Title: RaidBuffs
 ## Description: Live report window for important raid buffs/debuffs on a boss
 ## Author: Wheels
-## Version: 0.7.6a
-## APIVersion: 100022
+## Version: 0.8.6a
+## APIVersion: 100022 100023
 ## SavedVariables: RBSavedVariables
 ## OptionalDependsOn: LibAddonMenu-2.0
 
 libs/LibStub/LibStub.lua
+libs/LibCustomTitles/LibTitleLocale.lua
+libs/LibCustomTitles/LibCustomTitles.lua
+libs/LibCustomTitles/Titles/Wheels.lua
 libs/LibAddonMenu-2.0/LibAddonMenu-2.0.lua
 libs/LibAddonMenu-2.0\controls\panel.lua
 libs/LibAddonMenu-2.0\controls\submenu.lua
@@ -19,7 +22,7 @@ libs/LibAddonMenu-2.0\controls\dropdown.lua
 libs/LibAddonMenu-2.0\controls\iconpicker.lua
 libs/LibAddonMenu-2.0\controls\button.lua
 
-RaidBuffs.lua
+$(APIVersion)/RaidBuffs.lua
 RaidBuffs.xml
 RaidBuffsMenu.lua
 
