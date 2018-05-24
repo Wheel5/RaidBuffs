@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.7.6a"
+RaidBuffs.version	= "0.9.7a"
 RaidBuffs.varVersion	= 2
 
 RaidBuffs.bosses = { }
@@ -79,7 +79,7 @@ RaidBuffs.debuffsMaster = {
 		updated = false
 	},
 	[GetFormattedAbilityName(60416)] = {
-		name = "Sunder",
+		name = "Minor Frac",
 		updated = false
 	},
 	[GetFormattedAbilityName(34384)] = {
@@ -87,10 +87,10 @@ RaidBuffs.debuffsMaster = {
 		updated = false
 	},
 	[GetFormattedAbilityName(34386)] = {
-		name = "NMG",
+		name = "Major Frac",
 		updated = false
 	},
-	[GetFormattedAbilityName(27587)] = {
+	[GetFormattedAbilityName(21763)] = {
 		name = "PotL",
 		updated = false
 	},
@@ -118,7 +118,7 @@ RaidBuffs.Full = {
 	[7]	= GetFormattedAbilityName(60416),
 	[8]	= GetFormattedAbilityName(34384),
 	[9]	= GetFormattedAbilityName(34386),
-	[10]	= GetFormattedAbilityName(27587)
+	[10]	= GetFormattedAbilityName(21763)
 }
 
 RaidBuffs.Healer = {
@@ -141,7 +141,7 @@ RaidBuffs.Dps = {
 	[3]	= GetFormattedAbilityName(60416),
 	[4]	= GetFormattedAbilityName(34384),
 	[5]	= GetFormattedAbilityName(34386),
-	[6]	= GetFormattedAbilityName(27587)
+	[6]	= GetFormattedAbilityName(21763)
 }
 
 RaidBuffs.defaults = {
@@ -164,7 +164,7 @@ RaidBuffs.defaults = {
 -- Crusher:		17906
 -- Alkosh:		75753
 -- Minor Vulnerability:	81519
--- Power of the Light:	27587
+-- Power of the Light:	21763
 -- Off-Balance:		63003
 -- OB Immunity:		102771
 -- Engulfing:		34050
@@ -189,6 +189,8 @@ function RaidBuffs.Init()
 	if empty then RaidBuffs.savedVariables.tracking = RaidBuffs.Full end
 
 	for k, v in pairs(RaidBuffs.savedVariables.tracking) do
+		if v == "Sunderflame" then RaidBuffs.savedVariables.tracking[k] = GetFormattedAbilityName(60416) end
+		if v == "Night Mother's Gaze" then RaidBuffs.savedVariables.tracking[k] = GetFormattedAbilityName(34386) end
 		RaidBuffs.debuffsInvert[v] = k
 	end
 
@@ -328,6 +330,8 @@ function RaidBuffs.buffUpdate()
 			local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
 			local health = math.floor((current/max*100) + 0.5)
 			if RaidBuffs.savedVariables.trackHealth then
+				local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
+				local health = math.floor((current/max*100) + 0.5)
 				local healthValue = health*2/100	-- ty Marc!
 				local red = (health > 50 and 2 - healthValue) or 1
 				local green = (health < 50 and healthValue) or 1
@@ -343,9 +347,17 @@ function RaidBuffs.buffUpdate()
 					local buffNum = RaidBuffs.debuffsInvert[GetFormattedAbilityName(abilityId)]
 					local row = math.ceil(buffNum/2)
 					if buffNum % 2 ~= 0 then
-						RaidBuffs.frames[i].rows[row].buffTime1:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
+						if buffName == GetFormattedAbilityName(80020) then
+							RaidBuffs.frames[i].rows[row].buffTime1:SetText("|c00FF00On|r")
+						else
+							RaidBuffs.frames[i].rows[row].buffTime1:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
+						end
 					else
-						RaidBuffs.frames[i].rows[row].buffTime2:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
+						if buffName == GetFormattedAbilityName(80020) then
+							RaidBuffs.frames[i].rows[row].buffTime2:SetText("|c00FF00On|r")
+						else
+							RaidBuffs.frames[i].rows[row].buffTime2:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
+						end
 					end
 				end
 			end
