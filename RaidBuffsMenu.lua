@@ -32,7 +32,7 @@ function RaidBuffs.buildMenu(svdefaults)
 			type = "checkbox",
 			name = "UI Locked",
 			tooltip = "Allows for positioning of UI",
-			warning = "Will automatically ReloadUI when locked",
+			warning = "Reloading is recommended to save position!",
 			getFunc = function() return true end,
 			setFunc = function(value)
 				if not value then
@@ -41,10 +41,12 @@ function RaidBuffs.buildMenu(svdefaults)
 					RaidBuffs.frames[1]:SetMovable(true)
 					RaidBuffs.frames[1]:SetMouseEnabled(true)
 				else
-					ReloadUI()
+					EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.reticleChange)
+					RaidBuffs.frames[1]:SetHidden(true)
+					RaidBuffs.frames[1]:SetMovable(false)
+					RaidBuffs.frames[1]:SetMouseEnabled(false)
 				end
 			end,
-			requiresReload = true
 					
 		},
 		{
