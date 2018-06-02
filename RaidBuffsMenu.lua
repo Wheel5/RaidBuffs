@@ -134,9 +134,9 @@ function RaidBuffs.buildMenu(svdefaults)
 		},
 	}
 
-	local names = { }
+	local customControls = { }
 	for k,v in pairs(RaidBuffs.debuffsMaster) do
-		table.insert(names, k)
+		table.insert(RaidBuffs.names, k)
 	end
 	for i = 1, RaidBuffs.savedVariables.numCustom do
 		local newBuff = {
@@ -144,7 +144,8 @@ function RaidBuffs.buildMenu(svdefaults)
 				type = "dropdown",
 				name = "Buff " .. i,
 				width = "half",
-				choices = names,
+				scrollable = 10,
+				choices = RaidBuffs.names,
 				getFunc = function() return RaidBuffs.savedVariables.Custom[i] end,
 				setFunc = function(value)
 					RaidBuffs.savedVariables.Custom[i] = value
@@ -152,8 +153,18 @@ function RaidBuffs.buildMenu(svdefaults)
 				end
 			},
 		}
-		table.insert(options, newBuff[1])
+		table.insert(customControls, newBuff[1])
 	end
+
+	table.insert(options, {
+		type = "submenu",
+		name = "Custom Buff Setup",
+		tooltip = "Define which buffs you would like displayed",
+		controls = customControls,
+		}
+	)
+
+	local addCustomBuffByID = { }
 	
 	LAM:RegisterOptionControls(RaidBuffs.name.."Options", options)
 end
