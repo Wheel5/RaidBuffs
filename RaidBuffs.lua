@@ -6,6 +6,7 @@ RaidBuffs.version	= "0.9.8a"
 RaidBuffs.varVersion	= 2
 
 RaidBuffs.bosses = { }
+RaidBuffs.names  = { }
 
 RaidBuffs.debug = false
 
@@ -396,6 +397,19 @@ function RaidBuffs.buffUpdate()
 				end
 			end
 		end
+	end
+end
+
+function RaidBuffs.addCustomDebuff(abilityID, nick)
+	table.insert(RaidBuffs.debuffsMaster, {
+		[GetFormattedAbilityName(abilityID)] = {
+			name = nick or GetFormattedAbilityName(abilityID),
+			updated = false,
+		}
+	})
+	RaidBuffs.names = { }
+	for k,v in pairs(RaidBuffs.debuffsMaster) do
+		table.insert(RaidBuffs.names, k)
 	end
 end
 
