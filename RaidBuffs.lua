@@ -3,7 +3,7 @@ local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
 RaidBuffs.version	= "0.9.9a"
-RaidBuffs.varVersion	= 2
+RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
 RaidBuffs.names  = { }
@@ -18,7 +18,9 @@ RaidBuffs.MAX_ROWS = 5
 
 RaidBuffs.GROWTH = {
 	[1] = "Down",
-	[2] = "Up"
+	[2] = "Up",
+	[3] = "Left",
+	[4] = "Right",
 }
 
 RaidBuffs.CustomAbilityName = {
@@ -184,7 +186,7 @@ function RaidBuffs.Init()
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_BOSSES_CHANGED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_PLAYER_ACTIVATED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.reticleChange)
-	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults)
+	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults, GetWorldName())
 
 	local empty = true
 	for _,_ in pairs(RaidBuffs.savedVariables.tracking) do
