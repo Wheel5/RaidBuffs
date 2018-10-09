@@ -278,6 +278,10 @@ function RaidBuffs.spawnFrame(frameName, num)
 			RaidBuffs.frames[num]:SetAnchor(TOPLEFT, RaidBuffs.frames[num - 1], BOTTOMLEFT, 0, 3)
 		elseif dir == RaidBuffs.GROWTH[2] then
 			RaidBuffs.frames[num]:SetAnchor(BOTTOMLEFT, RaidBuffs.frames[num - 1], TOPLEFT, 0, -3)
+		elseif dir == RaidBuffs.GROWTH[3] then -- left
+			RaidBuffs.frames[num]:SetAnchor(TOPRIGHT, RaidBuffs.frames[num - 1], TOPLEFT, -3, 0)
+		elseif dir == RaidBuffs.GROWTH[4] then -- right
+			RaidBuffs.frames[num]:SetAnchor(TOPLEFT, RaidBuffs.frames[num - 1], TOPRIGHT, 3, 0)
 		end
 	end
 end
