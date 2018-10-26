@@ -1,5 +1,5 @@
 local MY_MODULE_NAME = "Wheels"
-local MY_MODULE_VERSION = 3
+local MY_MODULE_VERSION = 4
 
 local LCC = LibStub('LibCustomTitlesRN')
 if not LCC then return end
@@ -13,6 +13,7 @@ MY_MODULE:RegisterTitle("@Wheel5", nil, 1921, {en = "Stamblade For Hire"}, {colo
 MY_MODULE:RegisterTitle("@Wheel5", nil, 2043, {en = "Will DPS For Potions"}, {color={"#33CCFF","#66FF33"}})
 MY_MODULE:RegisterTitle("@Wheel5", nil, 2079, {en = "Immortal Memer"}, {color={"#DCE006","#FCAF14"}})
 MY_MODULE:RegisterTitle("@Wheel5", nil, 2136, {en = "Bringer of Light"}, {color={"#5625F7","#B825F7"}})
+MY_MODULE:RegisterTitle("@Wheel5", nil, 1838, {en = "Tic-Tac Tormentor"}, {color={"#E58D40","#FFE60C"}})
 MY_MODULE:RegisterTitle("@Mapurr", nil, 92, {en = "Cartographer"}, {color={"#AD99F7", "#9DDCE8"}})
 MY_MODULE:RegisterTitle("@Mapurr", nil, 2075, {en = "Cartographer"}, {color={"#AD99F7", "#9DDCE8"}})
 MY_MODULE:RegisterTitle("@RTG1", nil, 1330, {en = "Poggers"}, {color="#3D992D"})

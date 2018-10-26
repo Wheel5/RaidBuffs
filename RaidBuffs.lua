@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.9.9a"
+RaidBuffs.version	= "0.10.9a"
 RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
@@ -338,8 +338,6 @@ function RaidBuffs.buffUpdate()
 	for i = 1, MAX_BOSSES do
 		if RaidBuffs.bosses[i] then
 			local numBuffs = GetNumBuffs('boss'..i)
-			local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
-			local health = math.floor((current/max*100) + 0.5)
 			if RaidBuffs.savedVariables.trackHealth then
 				local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
 				local health = math.floor((current/max*100) + 0.5)
