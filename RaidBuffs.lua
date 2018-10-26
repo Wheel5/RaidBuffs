@@ -2,8 +2,8 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.9.9a"
-RaidBuffs.varVersion	= 2
+RaidBuffs.version	= "0.10.9a"
+RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
 RaidBuffs.names  = { }
@@ -18,7 +18,9 @@ RaidBuffs.MAX_ROWS = 5
 
 RaidBuffs.GROWTH = {
 	[1] = "Down",
-	[2] = "Up"
+	[2] = "Up",
+	[3] = "Left",
+	[4] = "Right",
 }
 
 RaidBuffs.CustomAbilityName = {
@@ -184,7 +186,7 @@ function RaidBuffs.Init()
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_BOSSES_CHANGED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_PLAYER_ACTIVATED, RaidBuffs.BossUpdate)
 	EVENT_MANAGER:RegisterForEvent(RaidBuffs.name, EVENT_RETICLE_HIDDEN_UPDATE, RaidBuffs.reticleChange)
-	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults)
+	RaidBuffs.savedVariables = ZO_SavedVars:New("RBSavedVariables", RaidBuffs.varVersion, nil, RaidBuffs.defaults, GetWorldName())
 
 	local empty = true
 	for _,_ in pairs(RaidBuffs.savedVariables.tracking) do
@@ -276,6 +278,10 @@ function RaidBuffs.spawnFrame(frameName, num)
 			RaidBuffs.frames[num]:SetAnchor(TOPLEFT, RaidBuffs.frames[num - 1], BOTTOMLEFT, 0, 3)
 		elseif dir == RaidBuffs.GROWTH[2] then
 			RaidBuffs.frames[num]:SetAnchor(BOTTOMLEFT, RaidBuffs.frames[num - 1], TOPLEFT, 0, -3)
+		elseif dir == RaidBuffs.GROWTH[3] then -- left
+			RaidBuffs.frames[num]:SetAnchor(TOPRIGHT, RaidBuffs.frames[num - 1], TOPLEFT, -3, 0)
+		elseif dir == RaidBuffs.GROWTH[4] then -- right
+			RaidBuffs.frames[num]:SetAnchor(TOPLEFT, RaidBuffs.frames[num - 1], TOPRIGHT, 3, 0)
 		end
 	end
 end
@@ -332,8 +338,6 @@ function RaidBuffs.buffUpdate()
 	for i = 1, MAX_BOSSES do
 		if RaidBuffs.bosses[i] then
 			local numBuffs = GetNumBuffs('boss'..i)
-			local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
-			local health = math.floor((current/max*100) + 0.5)
 			if RaidBuffs.savedVariables.trackHealth then
 				local current, max, effectiveMax = GetUnitPower("boss"..i, POWERTYPE_HEALTH)
 				local health = math.floor((current/max*100) + 0.5)

@@ -74,7 +74,7 @@ function RaidBuffs.buildMenu(svdefaults)
 		{
 			type = "dropdown",
 			name = "Tracking Preset",
-			tooltip = "Select debuff tracking preset (custom tracking coming soon)",
+			tooltip = "Select debuff tracking preset",
 			default = def.trackingName,
 			choices = trackingPresets,
 			getFunc = function() return RaidBuffs.savedVariables.trackingName end,
