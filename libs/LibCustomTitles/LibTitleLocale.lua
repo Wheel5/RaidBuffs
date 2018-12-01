@@ -209,6 +209,7 @@ local LocaleTitles =
 	{
 		[2] = 
 		{
+			[2368] = "The Unchained",
 			[2043] = "Undaunted",
 			[2136] = "Bringer of Light",
 			[2139] = "Gryphon Heart",
