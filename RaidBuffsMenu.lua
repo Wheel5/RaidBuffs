@@ -54,6 +54,23 @@ function RaidBuffs.buildMenu(svdefaults)
 			name = "General Options"
 		},
 		{
+			type = "slider",
+			name = "Frame Size",
+			tooltip = "Finally, an option for size!",
+			min = 0.5,
+			max = 2,
+			step = 0.1,
+			getFunc = function() return RaidBuffs.savedVariables.scale end,
+			setFunc = function(value)
+				RaidBuffs.savedVariables.scale = value
+				for i = 1, MAX_BOSSES do
+					if RaidBuffs.frames[i] ~= nil then
+						RaidBuffs.frames[i]:SetScale(RaidBuffs.savedVariables.scale)
+					end
+				end
+			end,
+		},
+		{
 			type = "dropdown",
 			name = "Growth Direction",
 			tooltip = "Determines which direction additional boss frames are placed in",

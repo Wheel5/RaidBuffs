@@ -161,7 +161,8 @@ RaidBuffs.defaults = {
 	["trackingName"] = "Full",
 	["growthDir"] = RaidBuffs.GROWTH[1],
 	["currRows"] = 5,
-	["trackHealth"] = true
+	["trackHealth"] = true,
+	["scale"] = 1,
 }
 
 -- Important Buffs:
@@ -284,6 +285,7 @@ function RaidBuffs.spawnFrame(frameName, num)
 			RaidBuffs.frames[num]:SetAnchor(TOPLEFT, RaidBuffs.frames[num - 1], TOPRIGHT, 3, 0)
 		end
 	end
+	RaidBuffs.frames[num]:SetScale(RaidBuffs.savedVariables.scale)
 end
 
 function RaidBuffs.BossUpdate()
