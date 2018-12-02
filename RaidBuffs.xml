@@ -2,6 +2,11 @@
 	<Controls>
 		<Control name="BuffRowTemplate" resizeToFitDescendents="true" virtual="true">
 			<Controls>
+				<Backdrop name="$(parent)BG1" hidden="true" centerColor="5500FF00" edgeColor="5500FF00" >
+					<Edge edgeSize="1" />
+					<Anchor point="TOPLEFT" offsetY="1"/>
+					<Dimensions x="113" y="18" />
+				</Backdrop>
 				<Label name="$(parent)BuffName1" inheritAlpha="true" color="FFFFF" font="$(CHAT_FONT)|$(KB_15)|soft-shadow-thick" wrapMode="ELLIPSE" verticalAlignment="BOTTOM" >
 					<Anchor point="TOPLEFT" />
 					<Dimensions x="83" y="18" />
@@ -10,6 +15,11 @@
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)BuffName1" />
 					<Dimensions x="30" y="18" />
 				</Label>
+				<Backdrop name="$(parent)BG2" hidden="true" centerColor="5500FF00" edgeColor="5500FF00" >
+					<Edge edgeSize="1" />
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)BuffTime1" offsetX="2" offsetY="1"/>
+					<Dimensions x="113" y="18" />
+				</Backdrop>
 				<Label name="$(parent)BuffName2" inheritAlpha="true" color="FFFFF" font="$(CHAT_FONT)|$(KB_15)|soft-shadow-thick" verticalAlignment="BOTTOM" >
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)BuffTime1" offsetX="2" />
 					<Dimensions x="83" y="18" />

@@ -163,6 +163,7 @@ RaidBuffs.defaults = {
 	["currRows"] = 5,
 	["trackHealth"] = true,
 	["scale"] = 1,
+	["cooldownBars"] = true,
 }
 
 -- Important Buffs:
@@ -267,8 +268,10 @@ function RaidBuffs.spawnFrame(frameName, num)
 	RaidBuffs.frames[num].bossHealth = RaidBuffs.frames[num]:GetNamedChild("BossHealth")
 	for i = 1, RaidBuffs.MAX_ROWS do
 		RaidBuffs.frames[num].rows[i] = RaidBuffs.frames[num]:GetNamedChild("Row"..i)
+		RaidBuffs.frames[num].rows[i].BG1 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BG1")
 		RaidBuffs.frames[num].rows[i].buffName1 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BuffName1")
 		RaidBuffs.frames[num].rows[i].buffTime1 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BuffTime1")
+		RaidBuffs.frames[num].rows[i].BG2 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BG2")
 		RaidBuffs.frames[num].rows[i].buffName2 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BuffName2")
 		RaidBuffs.frames[num].rows[i].buffTime2 = RaidBuffs.frames[num].rows[i]:GetNamedChild("BuffTime2")
 	end
@@ -352,6 +355,10 @@ function RaidBuffs.buffUpdate()
 			
 			for j = 1, numBuffs do
 				local buffName, timeStarted, timeEnding, buffSlot, stackCount, iconFilename, buffType, effectType, abilityType, statusEffectType, abilityId, canClickOff, castByPlayer = GetUnitBuffInfo('boss'..i, j)
+				local percentComplete = (timeEnding-(GetGameTimeMilliseconds()/1000))/(timeEnding-timeStarted) * 113
+				local completeValue = percentComplete*2/100
+				local bgRed = (percentComplete > 50 and 2 - completeValue) or 1
+				local bgGreen = (percentComplete < 50 and completeValue) or 1
 				local data = RaidBuffs.debuffsMaster[GetFormattedAbilityName(abilityId)]
 				if data and RaidBuffs.debuffsInvert[GetFormattedAbilityName(abilityId)] then
 					RaidBuffs.debuffsMaster[GetFormattedAbilityName(abilityId)].updated = true
@@ -363,11 +370,23 @@ function RaidBuffs.buffUpdate()
 						else
 							RaidBuffs.frames[i].rows[row].buffTime1:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
 						end
+						if RaidBuffs.savedVariables.cooldownBars then
+							RaidBuffs.frames[i].rows[row].BG1:SetHidden(false)
+							RaidBuffs.frames[i].rows[row].BG1:SetDimensions(percentComplete,18)
+							RaidBuffs.frames[i].rows[row].BG1:SetCenterColor(bgRed, bgGreen, 0, 0.55)
+							RaidBuffs.frames[i].rows[row].BG1:SetEdgeColor(bgRed, bgGreen, 0, 0.55)
+						end
 					else
 						if buffName == GetFormattedAbilityName(80020) then
 							RaidBuffs.frames[i].rows[row].buffTime2:SetText("|c00FF00On|r")
 						else
 							RaidBuffs.frames[i].rows[row].buffTime2:SetText(string.format('%.1f', RaidBuffs.time(timeEnding)))
+						end
+						if RaidBuffs.savedVariables.cooldownBars then
+							RaidBuffs.frames[i].rows[row].BG2:SetHidden(false)
+							RaidBuffs.frames[i].rows[row].BG2:SetDimensions(percentComplete,18)
+							RaidBuffs.frames[i].rows[row].BG2:SetCenterColor(bgRed, bgGreen, 0, 0.55)
+							RaidBuffs.frames[i].rows[row].BG2:SetEdgeColor(bgRed, bgGreen, 0, 0.55)
 						end
 					end
 				end
@@ -395,9 +414,21 @@ function RaidBuffs.buffUpdate()
 						if buffNum and buffNum % 2 ~= 0 then
 							RaidBuffs.frames[i].rows[row].buffName1:SetColor(1, 1, 1)
 							RaidBuffs.frames[i].rows[row].buffTime1:SetText('0.0')
+							if RaidBuffs.savedVariables.cooldownBars then
+								RaidBuffs.frames[i].rows[row].BG1:SetHidden(true)
+								RaidBuffs.frames[i].rows[row].BG1:SetDimensions(113,18)
+								RaidBuffs.frames[i].rows[row].BG1:SetCenterColor(0, 1, 0, 0.55)
+								RaidBuffs.frames[i].rows[row].BG1:SetEdgeColor(0, 1, 0, 0.55)
+							end
 						elseif buffNum and buffNum % 2 == 0 then
 							RaidBuffs.frames[i].rows[row].buffName2:SetColor(1, 1, 1)
 							RaidBuffs.frames[i].rows[row].buffTime2:SetText('0.0')
+							if RaidBuffs.savedVariables.cooldownBars then
+								RaidBuffs.frames[i].rows[row].BG2:SetHidden(true)
+								RaidBuffs.frames[i].rows[row].BG2:SetDimensions(113,18)
+								RaidBuffs.frames[i].rows[row].BG2:SetCenterColor(0, 1, 0, 0.55)
+								RaidBuffs.frames[i].rows[row].BG2:SetEdgeColor(0, 1, 0, 0.55)
+							end
 						end
 					end
 				end

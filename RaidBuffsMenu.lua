@@ -132,6 +132,28 @@ function RaidBuffs.buildMenu(svdefaults)
 			end
 		},
 		{
+			type = "checkbox",
+			name = "Cooldown Bars",
+			tooltip = "Display colored cooldown bars behind each buff",
+			default = def.cooldownBars,
+			getFunc = function() return RaidBuffs.savedVariables.cooldownBars end,
+			setFunc = function(value)
+				RaidBuffs.savedVariables.cooldownBars = value
+				if not value then
+					for i = 1, MAX_BOSSES do
+						if RaidBuffs.frames[i] ~= nil then
+							for j = 1, RaidBuffs.MAX_ROWS do
+								RaidBuffs.frames[i].rows[j].BG1:SetHidden(true)
+								RaidBuffs.frames[i].rows[j].BG1:SetHidden(true)
+								RaidBuffs.frames[i].rows[j].BG2:SetHidden(true)
+								RaidBuffs.frames[i].rows[j].BG2:SetHidden(true)
+							end
+						end
+					end
+				end
+			end
+		},
+		{
 			type = "slider",
 			name = "Number of Custom Buffs",
 			min = 1,
