@@ -1,5 +1,5 @@
 local MY_MODULE_NAME = "Wheels"
-local MY_MODULE_VERSION = 5
+local MY_MODULE_VERSION = 6
 
 local LCC = LibStub('LibCustomTitlesRN')
 if not LCC then return end
@@ -8,6 +8,7 @@ local MY_MODULE = LCC:RegisterModule(MY_MODULE_NAME, MY_MODULE_VERSION)
 if not MY_MODULE then return end
 
 --                      Account   Character  Override    English      German       French   Extra (e.g. color, hidden)
+MY_MODULE:RegisterTitle("@Wheel5", nil, 1836, {en = "The Dynamo"}, {color={"#02AAB0", "#00CDAC"}})
 MY_MODULE:RegisterTitle("@Wheel5", nil, 992, {en = "Will Code For Gold"}, {color={"#1BB716", "#137CD8"}})
 MY_MODULE:RegisterTitle("@Wheel5", nil, 1921, {en = "Stamblade For Hire"}, {color="#D82912"})
 MY_MODULE:RegisterTitle("@Wheel5", nil, 2043, {en = "Will DPS For Potions"}, {color={"#33CCFF","#66FF33"}})
