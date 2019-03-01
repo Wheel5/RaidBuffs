@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.12.9a"
+RaidBuffs.version	= "0.13.0"
 RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
