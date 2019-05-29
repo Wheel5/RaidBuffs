@@ -77,6 +77,10 @@ RaidBuffs.debuffsMaster = {
 		name = "Minor Vuln",
 		updated = false
 	},
+	[GetFormattedAbilityName(122397)] = {
+		name = "Major Vuln",
+		updated = false
+	},
 	[GetFormattedAbilityName(34050)] = {
 		name = "Engulfing",
 		updated = false
