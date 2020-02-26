@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.13.0"
+RaidBuffs.version	= "0.15.0"
 RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
@@ -37,7 +37,7 @@ RaidBuffs.CustomAbilityName = {
 	[62988] = GetAbilityName(62988),
 	[62993] = GetAbilityName(62993),
 	[62998] = GetAbilityName(62998),
-	[63003] = GetAbilityName(63003),
+	[39077] = GetAbilityName(39077),
 	[70054] = GetAbilityName(70054),
 	[71877] = GetAbilityName(71877),
 	[72279] = GetAbilityName(72279),
@@ -61,7 +61,7 @@ RaidBuffs.debuffsMaster = {
 		name = "Alkosh",
 		updated = false
 	},
-	[GetFormattedAbilityName(63003)] = {
+	[GetFormattedAbilityName(39077)] = {
 		name = "Off-Balance",
 		updated = false
 	},
@@ -69,7 +69,7 @@ RaidBuffs.debuffsMaster = {
 		name = "Crusher",
 		updated = false
 	},
-	[GetFormattedAbilityName(102771)] = {
+	[GetFormattedAbilityName(134599)] = {
 		name = "Immunity",
 		updated = false
 	},
@@ -81,7 +81,7 @@ RaidBuffs.debuffsMaster = {
 		name = "Major Vuln",
 		updated = false
 	},
-	[GetFormattedAbilityName(34050)] = {
+	[GetFormattedAbilityName(31104)] = {
 		name = "Engulfing",
 		updated = false
 	},
@@ -101,11 +101,11 @@ RaidBuffs.debuffsMaster = {
 		name = "PotL",
 		updated = false
 	},
-	[GetFormattedAbilityName(88634)] = {
+	[GetFormattedAbilityName(80020)] = {
 		name = "Lifesteal",
 		updated = false
 	},
-	[GetFormattedAbilityName(62796)] = {
+	[GetFormattedAbilityName(39100)] = {
 		name = "Magsteal",
 		updated = false
 	},
@@ -113,7 +113,7 @@ RaidBuffs.debuffsMaster = {
 		name = "Weakening",
 		updated = false
 	},
-	[GetFormattedAbilityName(68589)] = {
+	[GetFormattedAbilityName(68588)] = {
 		name = "Min. Breach",
 		updated = false
 	},
@@ -121,11 +121,11 @@ RaidBuffs.debuffsMaster = {
 
 RaidBuffs.Full = {
 	[1]	= GetFormattedAbilityName(75753),
-	[2]	= GetFormattedAbilityName(63003),
+	[2]	= GetFormattedAbilityName(39077),
 	[3]	= GetFormattedAbilityName(17906),
-	[4]	= GetFormattedAbilityName(102771),
+	[4]	= GetFormattedAbilityName(134599),
 	[5]	= GetFormattedAbilityName(81519),
-	[6]	= GetFormattedAbilityName(34050),
+	[6]	= GetFormattedAbilityName(31104),
 	[7]	= GetFormattedAbilityName(60416),
 	[8]	= GetFormattedAbilityName(34384),
 	[9]	= GetFormattedAbilityName(34386),
@@ -133,22 +133,22 @@ RaidBuffs.Full = {
 }
 
 RaidBuffs.Healer = {
-	[1]	= GetFormattedAbilityName(62796),
-	[2]	= GetFormattedAbilityName(63003),
-	[3]	= GetFormattedAbilityName(88634),
-	[4]	= GetFormattedAbilityName(102771),
+	[1]	= GetFormattedAbilityName(39100),
+	[2]	= GetFormattedAbilityName(39077),
+	[3]	= GetFormattedAbilityName(80020),
+	[4]	= GetFormattedAbilityName(134599),
 	[5]	= GetFormattedAbilityName(81519)
 }
 
 RaidBuffs.Tank = {
 	[1]	= GetFormattedAbilityName(75753),
-	[2]	= GetFormattedAbilityName(34050),
+	[2]	= GetFormattedAbilityName(31104),
 	[3]	= GetFormattedAbilityName(17906)
 }
 
 RaidBuffs.Dps = {
-	[1]	= GetFormattedAbilityName(63003),
-	[2]	= GetFormattedAbilityName(102771),
+	[1]	= GetFormattedAbilityName(39077),
+	[2]	= GetFormattedAbilityName(134599),
 	[3]	= GetFormattedAbilityName(60416),
 	[4]	= GetFormattedAbilityName(34384),
 	[5]	= GetFormattedAbilityName(34386),
@@ -178,9 +178,9 @@ RaidBuffs.defaults = {
 -- Alkosh:		75753
 -- Minor Vulnerability:	81519
 -- Power of the Light:	21763
--- Off-Balance:		63003
--- OB Immunity:		102771
--- Engulfing:		34050
+-- Off-Balance:		39077
+-- OB Immunity:		134599
+-- Engulfing:		31104
 
 
 function RaidBuffs.Init()
@@ -400,14 +400,14 @@ function RaidBuffs.buffUpdate()
 				local row
 				if buffNum ~= nil then
 					row = math.ceil(buffNum/2)
-					if v.updated and k ~= GetFormattedAbilityName(102771) then
+					if v.updated and k ~= GetFormattedAbilityName(134599) then
 						if buffNum and buffNum % 2 ~= 0 then
 							RaidBuffs.frames[i].rows[row].buffName1:SetColor(0, 1, 0)
 						elseif buffNum and buffNum % 2 == 0 then
 							RaidBuffs.frames[i].rows[row].buffName2:SetColor(0, 1, 0)
 						end
 						v.updated = false
-					elseif v.updated and k == GetFormattedAbilityName(102771) then
+					elseif v.updated and k == GetFormattedAbilityName(134599) then
 						if buffNum and buffNum % 2 ~= 0 then
 							RaidBuffs.frames[i].rows[row].buffName1:SetColor(1, 0, 0)
 						elseif buffNum and buffNum % 2 == 0 then
