@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.15.0"
+RaidBuffs.version	= "0.16.0"
 RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
@@ -115,6 +115,14 @@ RaidBuffs.debuffsMaster = {
 	},
 	[GetFormattedAbilityName(68588)] = {
 		name = "Min. Breach",
+		updated = false
+	},
+	[GetFormattedAbilityName(126597)] = {
+		name = "Z'en",
+		updated = false
+	},
+	[GetFormattedAbilityName(127070)] = {
+		name = "Martial",
 		updated = false
 	},
 }

@@ -1,8 +1,8 @@
 ## Title: RaidBuffs
 ## Description: Live report window for important raid buffs/debuffs on a boss
 ## Author: Wheels
-## Version: 0.15.0
-## APIVersion: 100029
+## Version: 0.16.0
+## APIVersion: 100030
 ## SavedVariables: RBSavedVariables
 ## DependsOn: LibAddonMenu-2.0 LibStub
 
