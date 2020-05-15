@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 function RaidBuffs.buildMenu(svdefaults)
-	local LAM = LibStub("LibAddonMenu-2.0")
+	local LAM = LibAddonMenu2
 	local def = svdefaults
 	local trackingPresets = {
 		"Full",

@@ -2,7 +2,7 @@ RaidBuffs = RaidBuffs or {}
 local RaidBuffs = RaidBuffs
 
 RaidBuffs.name		= "RaidBuffs"
-RaidBuffs.version	= "0.16.0"
+RaidBuffs.version	= "0.16.3"
 RaidBuffs.varVersion	= 3
 
 RaidBuffs.bosses = { }
@@ -45,6 +45,7 @@ RaidBuffs.CustomAbilityName = {
 	[96260] = GetAbilityName(96260),
 	[100582] = GetAbilityName(100582),
 	[100582] = GetAbilityName(100582),
+	[45902] = GetAbilityName(45902),
 }
 
 local function GetFormattedAbilityName(id)	-- Fix to Lui conflict - thank you Solinur
@@ -115,6 +116,10 @@ RaidBuffs.debuffsMaster = {
 	},
 	[GetFormattedAbilityName(68588)] = {
 		name = "Min. Breach",
+		updated = false
+	},
+	[GetFormattedAbilityName(62485)] = {
+		name = "Maj. Breach",
 		updated = false
 	},
 	[GetFormattedAbilityName(126597)] = {
@@ -367,6 +372,7 @@ function RaidBuffs.buffUpdate()
 			
 			for j = 1, numBuffs do
 				local buffName, timeStarted, timeEnding, buffSlot, stackCount, iconFilename, buffType, effectType, abilityType, statusEffectType, abilityId, canClickOff, castByPlayer = GetUnitBuffInfo('boss'..i, j)
+				if abilityId == 45902 then abilityId = 39077 end -- THANKS ZOS (Off Balance vs Off-Balance)
 				local percentComplete = (timeEnding-(GetGameTimeMilliseconds()/1000))/(timeEnding-timeStarted) * 113
 				local completeValue = percentComplete*2/100
 				local bgRed = (percentComplete > 50 and 2 - completeValue) or 1
